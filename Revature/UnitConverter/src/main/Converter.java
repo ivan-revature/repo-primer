@@ -13,6 +13,7 @@ public class Converter {
 		
 		int intResult;
 		double dblResult;
+		double dblQty;
 		
 		do {
 			cunits.displayMenu();
@@ -22,18 +23,18 @@ public class Converter {
 			
 			switch(menuSelection) {
 			case 1:
-				System.out.println("\nCups: ");
-				intResult = cunits.convertCupsToTeaspoons(scanner.nextInt());
-				cunits.displayResult(intResult, "tsp");
+				dblQty = Converter.collectQty("Cups", "tsp", scanner);
+				dblResult = cunits.convertCupsToTeaspoons(dblQty);
+				cunits.displayResult(dblResult, "tsp");
 				break;
 			case 2:
-				System.out.println("\nMiles: ");
-				dblResult = cunits.convertMilestoKm(scanner.nextDouble());
+				dblQty = Converter.collectQty("Miles", "km", scanner);
+				dblResult = cunits.convertMilestoKm(dblQty);
 				cunits.displayResult(dblResult, "km");
 				break;
 			case 3:
-				System.out.println("\nUS Gal: ");
-				dblResult = cunits.convertUsGalToImGal(scanner.nextDouble());
+				dblQty = Converter.collectQty("US gal", "Imperial gal", scanner);
+				dblResult = cunits.convertUsGalToImGal(dblQty);
 				cunits.displayResult(dblResult, "imperial gal");
 				break;
 			case 4:
@@ -43,22 +44,27 @@ public class Converter {
 		}  while (menuSelection != 4);
 	}
 	
-	public int convertCupsToTeaspoons(int cups) {
-		final int tspInCup = 48;
-		return cups * tspInCup;
+	private static double collectQty (String unit1, String unit2, Scanner scanner) {
+		System.out.println("\n" + unit1 + ": ");
+		return scanner.nextDouble();
 	}
 	
-	public double convertMilestoKm(double miles) {
+	private double convertCupsToTeaspoons(double cups) {
+		final int tspInCup = 48;
+		return cups * (double) tspInCup;
+	}
+	
+	private double convertMilestoKm(double miles) {
 		final double kmInMile = 1.609344;
 		return miles * kmInMile;
 	}
 	
-	public double convertUsGalToImGal(double usgal) {
+	private static double convertUsGalToImGal(double usgal) {
 		final double imgalInUSgal = 0.83267;
 		return usgal * imgalInUSgal;
 	}
 	
-	public void displayMenu() {
+	private void displayMenu() {
 		System.out.println("Unit Converter");
 		System.out.println("\nPlease select an option:");
 		System.out.println("1. Cups to Teaspoons");
@@ -67,11 +73,11 @@ public class Converter {
 		System.out.println("4. Quit");
 	}
 	
-	public void displayResult(int cRes, String units) {
+	private void displayResult(int cRes, String units) {
 		System.out.println("Conversion: " + cRes + " " + units);
 	}
 	
-	public void displayResult(double cRes, String units) {
+	private void displayResult(double cRes, String units) {
 		System.out.println("Conversion: " + cRes + " " + units);
 	}
 }
