@@ -13,6 +13,7 @@ public class Converter {
 		
 		double dblResult = 0.0;
 		double dblQty;
+		String unit2 = "";
 		
 		do {
 			cunits.displayMenu1();
@@ -26,46 +27,62 @@ public class Converter {
 				/* Volume */
 				switch(menuSelection2) {
 				case 1:
-					dblQty = Converter.collectQty("Teaspoons: ", "tbsp", scanner);
+					dblQty = Converter.collectQty("Teaspoons", "tbsp", scanner);
 					dblResult = cunits.convertTspToTbsp(dblQty);
+					unit2 = "tbsp";
+					break;
 				case 2:
-					dblQty = Converter.collectQty("Teaspoons: ", "cups", scanner);
+					dblQty = Converter.collectQty("Teaspoons", "cups", scanner);
 					dblResult = cunits.convertTspToCups(dblQty);
+					unit2 = "cups";
+					break;
 				case 3:
-					dblQty = Converter.collectQty("Teaspoons: ", "liters", scanner);
+					dblQty = Converter.collectQty("Teaspoons", "liters", scanner);
 					dblResult = cunits.convertTspToLiters(dblQty);
+					unit2 = "liters";
+					break;
 				}
-				cunits.displayResult(dblResult, "tsp");
+				cunits.displayResult(dblResult, unit2);
 				break;
 			case 2:
 				/* Distance */
 				switch(menuSelection2) {
 				case 1:
-					dblQty = Converter.collectQty("Miles: ", "km", scanner);
+					dblQty = Converter.collectQty("Miles", "km", scanner);
 					dblResult = cunits.convertMilesToKm(dblQty);
+					unit2 = "km";
+					break;
 				case 2:
-					dblQty = Converter.collectQty("Miles: ", "feet", scanner);
+					dblQty = Converter.collectQty("Miles", "feet", scanner);
 					dblResult = cunits.convertMilesToFeet(dblQty);
+					unit2 = "feet";
+					break;
 				case 3:
-					dblQty = Converter.collectQty("Miles: ", "yards", scanner);
+					dblQty = Converter.collectQty("Miles", "yards", scanner);
 					dblResult = cunits.convertMilesToYards(dblQty);
+					unit2 = "yards";
 				}
-				cunits.displayResult(dblResult, "km");
+				cunits.displayResult(dblResult, unit2);
 				break;
 			case 3:
 				/* Time */
 				switch(menuSelection2) {
 				case 1:
-					dblQty = Converter.collectQty("Seconds: ", "min", scanner);
+					dblQty = Converter.collectQty("Seconds", "min", scanner);
 					dblResult = cunits.convertSecondsToMinutes(dblQty);
+					unit2 = "min";
+					break;
 				case 2:
-					dblQty = Converter.collectQty("Seconds: ", "hr", scanner);
+					dblQty = Converter.collectQty("Seconds", "hr", scanner);
 					dblResult = cunits.convertSecondsToHours(dblQty);
+					unit2 = "hr";
+					break;
 				case 3:
-					dblQty = Converter.collectQty("Seconds: ", "days", scanner);
+					dblQty = Converter.collectQty("Seconds", "days", scanner);
 					dblResult = cunits.convertSecondsToDays(dblQty);
+					unit2 = "days";
 				}
-				cunits.displayResult(dblResult, "min");
+				cunits.displayResult(dblResult, unit2);
 				break;
 			case 4:
 				scanner.close();
