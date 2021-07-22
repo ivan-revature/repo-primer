@@ -12,13 +12,30 @@ public class Room extends Fixture {
 		super(name, shortDescription, longDescription);
 		
 	}
-
+	
+	public String getName() {
+		return this.name;
+	}
+	
+	public String getShortDescription() {
+		return this.shortDescription;
+	}
+	
+	public String getLongDescription() {
+		return this.longDescription;
+	}
+	
 	public Room[] getExits() {
 		return this.exits;
 	}
 	
-	public void setExits(int exitsNumber, Room room) {
+	public void setExits(int exitsNumber, Room[] room) {
+		// set size of exits array
 		this.exits = new Room[exitsNumber];
+		
+		// set rooms that the current room
+		// exits to
+		this.exits = room;
 	}
 	public Room getExit(String direction) {
 		switch(direction) {
