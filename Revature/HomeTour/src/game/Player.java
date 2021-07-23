@@ -7,4 +7,12 @@ public class Player {
 	public Player(Room curRm) {
 		this.currentRoom = curRm;
 	}
+	
+	public Room getCurrentRoom() {
+		return currentRoom;
+	}
+	
+	public void setCurrentRoom(Room curRm) {
+		currentRoom = curRm;
+	}
 }

@@ -15,6 +15,7 @@ public class Main {
 		
 		Main controller = new Main();
 		Player player = new Player(room);
+		// System.exit(0);
 		
 		do
 		{
@@ -53,23 +54,114 @@ public class Main {
 	}
 	
 	private static void parse(String[] playerCmdInput, Player player) {
+		Room[] playRoom;
+		Room currentRoom = null;
+		String msg;
+		boolean lockedRoomFound = false;
 		
 		switch(playerCmdInput[0]) {
 			case "go":
 				// handle target (direction)
-				// player.currentRoom = "room";
+				if( playerCmdInput[1] == "north") {
+					Main.processCommand("north", player);
+				}else if (playerCmdInput[1] == "south") {
+					Main.processCommand("south", player);
+				}else if (playerCmdInput[1] == "east") {
+					Main.processCommand("east", player);
+				}else if (playerCmdInput[1] == "west") {
+					Main.processCommand("west", player);
+				} else {
+					// throw exception
+				}
 				break;
 			case "take":
 				// handle target
+				switch(playerCmdInput[1]) {
+				case "book":
+					if( player.getCurrentRoom().getName() == "Study") {
+						msg = "You picked up a good book - "
+								+ "Einstein's The Theory of Relativity.";
+						Main.printMsgText(msg);
+					} else {
+						msg = "There are no books to pick up in this room.";
+						printMsgText(msg);
+					}
+				case "laptop":
+					if( player.getCurrentRoom().getName() == "Study" ||
+							player.getCurrentRoom().getName() == "Master Bedroom") {
+						msg = "The laptop is running!";
+						Main.printMsgText(msg);
+					} else {
+						msg = "There are no books to pick up in this room.";
+						Main.printMsgText(msg);
+					}
+					break;
+				case "can":
+					if(player.getCurrentRoom().getName() == "Kitchen") {
+						msg = "You are holding a can.";
+						Main.printMsgText(msg);
+					} else {
+						msg = "There are no cans in this room.";
+						Main.printMsgText(msg);
+					}
+					break;
+				case "remote":
+					if(player.getCurrentRoom().getName() == "Living Room") {
+						msg = "You are holding the remote.";
+						Main.printMsgText(msg);
+					} else {
+						msg = "There are no remotes in this room";
+						Main.printMsgText(msg);
+					}
+					break;
+				case "soap":
+					if(player.getCurrentRoom().getName() == "Full Bathroom" ||
+							player.getCurrentRoom().getName() == "Study Bathroom") {
+						msg = "You are holding a soap";
+						Main.printMsgText(msg);
+					} else {
+						msg = "There is no soap in this room";
+						Main.printMsgText(msg);
+					}
+					break;
+				case "default":
+			}
 				break;
 			case "open":
 				// handle target
+				switch(playerCmdInput[1]) {
+				case "refridgerator":
+					if(player.getCurrentRoom().getName() == "Kitchen") {
+						msg = "You open the fridge and you see loooottsss of food.";
+						Main.printMsgText(msg);
+					} else {
+						msg = "There is no refridgerator in this room.";
+						Main.printMsgText(msg);
+					}
+					break;
+				case "cabinet":
+					if(player.getCurrentRoom().getName() == "Kitchen") {
+						msg = "You many cans to choose from.";
+						Main.printMsgText(msg);
+					} else {
+						msg = "There are no cabinets in this room.";
+						Main.printMsgText(msg);
+					}
+					break;
+				case "pending":
+				}
+			break;
+			case "unlock":
+				// handle target
+				
 				break;
 			case "pick up":
 				// handle target
+				
 				break;
 			case "walk":
 				// handle target
+				
 				break;
 			case "look":
 				
@@ -77,5 +169,36 @@ public class Main {
 			default:
 				
 		}
+	}
+	
+	private static void processCommand(String target, Player player) {
+		Room currentRoom = player.getCurrentRoom().getExit(target);
+		if(Main.checkLock(currentRoom)) {
+			return; // Player is not moving
+		} else {
+			player.setCurrentRoom(currentRoom);
+			printRoom(player);
+		}
+	}
+	
+	private static boolean checkLock(Room curRm) {
+		if(curRm.getName() == "study") {
+			if(curRm.getLockState()) {
+				String msg = "Door doesn't open!  You always keep your study "
+						+ "room locked.";
+				Main.printMsgText(msg);
+				return true;
+			} else {
+				msg = "You are now in your study.";
+				Main.printMsgText(msg);
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+	
+	private static void printMsgText(String msg) {
+		System.out.println("\n" + msg);
 	}
 }

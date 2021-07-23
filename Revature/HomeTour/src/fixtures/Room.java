@@ -4,6 +4,7 @@ public class Room extends Fixture {
 	String name = null;
 	String shortDescription = null;
 	String longDescription = null;
+	Boolean locked = false;
 	
 	// Rooms next to current room
 	Room[] exits;
@@ -37,6 +38,15 @@ public class Room extends Fixture {
 		// exits to
 		this.exits = room;
 	}
+	
+	public boolean getLockState() {
+		return this.locked;
+	}
+	
+	public void setLockState() {
+		this.locked = true;
+	}
+	
 	public Room getExit(String direction) {
 		switch(direction) {
 		case "north":

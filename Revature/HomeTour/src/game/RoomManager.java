@@ -85,6 +85,8 @@ public class RoomManager {
 					+ "the center, dim lights come out from "
 					+ "under the floating shelves.  Bookcases "
 					+ "line the walls.");
+		study.setLockState();
+		
 		this.rooms[6] = study;
 		
 		Room studyBathroom = new Room(
@@ -199,6 +201,7 @@ public class RoomManager {
 		allExits[0] = this.rooms[10];
 		this.rooms[12].setExits(allExits.length, allExits);
 		
+		// Set starting room
 		this.startingRoom = porch;
 		
 	}
