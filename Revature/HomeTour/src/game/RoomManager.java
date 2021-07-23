@@ -6,13 +6,16 @@ public class RoomManager {
 	Room startingRoom;
 	Room[] rooms;
 	
-	public RoomManager(Room startRoom, Room[] rms) {
-		this.startingRoom = startRoom;
-		this.rooms = rms;
+	public RoomManager() {
+		rooms = new Room[13];
 	}
 	
 	public Room getStartingRoom() {
 		return this.startingRoom;
+	}
+	
+	public void setStartingRoom(Room startRm) {
+		this.startingRoom = startRm;
 	}
 	
 	public Room[] getRooms() {
@@ -51,8 +54,6 @@ public class RoomManager {
 					+ "of the house.  Seats are placed "
 					+ "along the bar and on both sides");
 		this.rooms[2] = partitioningWall;
-		
-		
 		
 		Room diningRoom = new Room(
 					"The Dining Room",
@@ -200,5 +201,8 @@ public class RoomManager {
 		allExits = new HashMap<String, Room>();
 		allExits.put("north", this.rooms[10]); // exit to the hallway
 		this.rooms[12].setExits(allExits.size(), allExits); // exit to the hallway
+		
+		// Set starting room
+		this.startingRoom = this.rooms[0];
 	}
 }

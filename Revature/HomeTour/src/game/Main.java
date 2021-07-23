@@ -4,7 +4,7 @@ import fixtures.*;
 import java.util.Scanner;
 
 public class Main {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		String[] cmdActionTarget;
 		// Set starting room
 		String rmName = "porch";
@@ -14,12 +14,9 @@ public class Main {
 				+ "shade." + "\n"
 				+ "The sheet of concrete leads you "
 				+ "north into the front door.";
-		
-		Room startingRoom = new Room(rmName, rmSDesc, rmLDesc);
-		Room[] rooms = new Room[13];
-		
+	try {
 		// Initialize Room instance variables
-		RoomManager rmMgr = new RoomManager(startingRoom, rooms);
+		RoomManager rmMgr = new RoomManager();
 		rmMgr.init();
 		
 		// Initialize player instance
@@ -47,7 +44,14 @@ public class Main {
 			// parse input
 			Main.parse(cmdActionTarget, player);
 		} while(cmdActionTarget[0] != "quit");
+	}
+	catch (Exception e) {
 		
+		System.out.println("Exception was caught: " + e.getMessage());
+	}
+	finally {
+		System.out.println("in \"finally\"\n");
+	}
 	}
 	
 	private static void printRoom(Player player) {
@@ -60,13 +64,16 @@ public class Main {
 	
 	private static String[] collectInput() {
 		Scanner scanner = new Scanner(System.in);
+		String cmd;
 		String[] input = new String[2];
 		
 		System.out.println("What do you wish to do next? ");
 		// Collect (1) action, (2) target of action (if any)
 		// for example, go (action) east (target)
-		input[0] = scanner.next();
-		input[1] = scanner.next();
+		
+		cmd = scanner.nextLine();
+		
+		input = cmd.split(" ", 2);
 		
 		scanner.close();
 		return input;
@@ -196,17 +203,18 @@ public class Main {
 	}
 	
 	private static void processCommand(String target, Player player) {
-		Room currentRoom = player.getCurrentRoom().getExit(target);
+		// Room player is trying to go into
+		Room nextRoom = player.getCurrentRoom().getExit(target);
 		
 		// Perform check - player might be trying to walk
 		// into a locked room
 		System.out.println("Entered processCommand.");
-		if(Main.checkLock(currentRoom)) {
+		if(Main.checkLock(nextRoom)) {
 			System.out.println("boolean value is true");
 			return; // Player is not moving
 		} else {
 			System.out.println("attempting to setCurrentRoom.");
-			player.setCurrentRoom(currentRoom);
+			player.setCurrentRoom(nextRoom);
 			printRoom(player);
 		}
 	}
