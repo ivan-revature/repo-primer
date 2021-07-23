@@ -1,13 +1,12 @@
 package fixtures;
+import java.util.*;
 
 public class Room extends Fixture {
-	String name = null;
-	String shortDescription = null;
-	String longDescription = null;
+	
 	Boolean locked = false;
 	
 	// Rooms next to current room
-	Room[] exits;
+	Map<String, Room> exits;
 	
 	public Room(String name, String shortDescription, String longDescription) {
 		super(name, shortDescription, longDescription);
@@ -26,13 +25,13 @@ public class Room extends Fixture {
 		return this.longDescription;
 	}
 	
-	public Room[] getExits() {
+	public Map<String, Room> getExits() {
 		return this.exits;
 	}
 	
-	public void setExits(int exitsNumber, Room[] room) {
+	public void setExits(int exitsNumber, Map<String, Room> room) {
 		// set size of exits array
-		this.exits = new Room[exitsNumber];
+		//this.exits = new Room[exitsNumber];
 		
 		// set rooms that the current room
 		// exits to
@@ -50,17 +49,16 @@ public class Room extends Fixture {
 	public Room getExit(String direction) {
 		switch(direction) {
 		case "north":
-			return this.exits[0];
+			return this.exits.get("north");
 		case "east":
-			return this.exits[1];
+			return this.exits.get("south");
 		case "south":
-			return this.exits[2];
+			return this.exits.get("east");
 		case "west":
-			return this.exits[3];
+			return this.exits.get("west");
 		default:
 			// add default case
-			return this.exits[0];
+			return this.exits.get("north");
 		}
-		
 	}
 }
