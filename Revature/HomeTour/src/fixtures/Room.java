@@ -47,18 +47,26 @@ public class Room extends Fixture {
 	}
 	
 	public Room getExit(String direction) {
+		Room rm;
 		switch(direction) {
 		case "north":
-			return this.exits.get("north");
-		case "east":
-			return this.exits.get("south");
+			rm = this.exits.get("north");
+			break;
 		case "south":
-			return this.exits.get("east");
+			rm = this.exits.get("south");
+			break;
+		case "east":
+			rm = this.exits.get("east");
+			break;
 		case "west":
-			return this.exits.get("west");
+			rm = this.exits.get("west");
+			break;
 		default:
 			// add default case
-			return this.exits.get("north");
+			System.out.println("getExit(dir) default exec'd");
+			//return this.exits.get("north");
+			rm = null;
 		}
+		return rm;
 	}
 }

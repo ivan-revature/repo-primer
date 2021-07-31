@@ -1,0 +1,11 @@
+remove untracked files and folders
+run before nex t command
+git clean -d -n
+git clean -d -f
+git clean -f /* files only */
+
+To clear your Git cache:12443536687698
+git rm -r --cached [filename]
+
+https://www.junosnotes.com/git/how-to-unstage-files-on-git/
+°	

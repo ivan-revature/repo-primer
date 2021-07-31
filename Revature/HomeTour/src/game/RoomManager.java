@@ -76,7 +76,7 @@ public class RoomManager {
 		Room kitchen = new Room(
 					"The Kitchen",
 					"The kitchen with several appliances.",
-					"The kitchen counts with a stove, zinc, a "
+					"The kitchen counts with a stove, sink, a "
 					+ "refridgerator, a microwave, a radio "
 					+ "attached to the bottom of a cabinet of "
 					+ "which there is a nice a set.");
@@ -143,7 +143,7 @@ public class RoomManager {
 		// Set all the exits to all the rooms
 		
 		allExits = new HashMap<String, Room>();
-		allExits.put("north", this.rooms[0]);
+		allExits.put("north", this.rooms[1]);
 		this.rooms[0].setExits(allExits.size(), allExits);
 		
 		allExits = new HashMap<String, Room>();
@@ -157,8 +157,11 @@ public class RoomManager {
 		this.rooms[2].setExits(allExits.size(), allExits);
 		
 		allExits = new HashMap<String, Room>();
-		
-		this.rooms[3].setExits(allExits.size(), allExits);
+		allExits.put("north", this.rooms[4]); // exit to the backyard
+		allExits.put("south", this.rooms[3]); // exit to dividing wall
+		allExits.put("east", this.rooms[8]); // exit to hallway
+		allExits.put("west", this.rooms[5]); // exit to the kitchen
+		this.rooms[3].setExits(allExits.size(), allExits); // Dining Room
 		
 		allExits = new HashMap<String, Room>();
 		allExits.put("south", this.rooms[3]);

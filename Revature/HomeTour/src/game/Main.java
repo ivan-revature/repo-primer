@@ -1,19 +1,15 @@
 package game;
 import fixtures.*;
 
+import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
 	public static void main(String[] args) throws Exception {
-		String[] cmdActionTarget;
-		// Set starting room
-		String rmName = "porch";
-		String rmSDesc = "a port-covered, 4-by-10 ft porch";
-		String rmLDesc = "A nice, ordinary porch surrounded by "
-				+ "a big tree, grass, and lots of "
-				+ "shade." + "\n"
-				+ "The sheet of concrete leads you "
-				+ "north into the front door.";
+	Scanner scanner = new Scanner(System.in);
+	String[] cmdActionTarget;
+	int testInt = 0;
+		
 	try {
 		// Initialize Room instance variables
 		RoomManager rmMgr = new RoomManager();
@@ -36,14 +32,20 @@ public class Main {
 			
 			// display prompt
 			// start out with initial values
+			// System.out.println("iteration: " + ++testInt);
 			Main.printRoom(player);
 			
+			// Display all the exits for the current room
+			// for the player to see
+			Main.printRoomExits(player);
+			
 			// collect input
-			cmdActionTarget = Main.collectInput();
+			cmdActionTarget = Main.collectInput(scanner);
 
 			// parse input
 			Main.parse(cmdActionTarget, player);
 		} while(cmdActionTarget[0] != "quit");
+		scanner.close();
 	}
 	catch (Exception e) {
 		
@@ -62,43 +64,79 @@ public class Main {
 							+ rm.getLongDescription());
 	}
 	
-	private static String[] collectInput() {
-		Scanner scanner = new Scanner(System.in);
-		String cmd;
+	private static void printRoomExits(Player player) {
+		// current room's exits
+		Room rm = player.getCurrentRoom();
+		Map<String, Room> allExts;
+		
+		allExts = rm.getExits();
+		System.out.println("\nThis room has exits to: \n");
+		for(Object key: allExts.keySet()) {
+			System.out.println(key.toString() + " ==> " + allExts.get(key).getName()
+						+ "\n");
+		}
+	}
+	
+	private static boolean roomExists(Player player, String direction) {
+		boolean exists = false;
+		// current room's exits
+		Room rm = player.getCurrentRoom();
+		Map<String, Room> allExts;
+		
+		allExts = rm.getExits();
+		for(Object key: allExts.keySet()) {
+			if( key.toString().equalsIgnoreCase(direction) ) {
+				exists = true;
+			}
+		}
+		return exists;
+	}
+	
+	private static String[] collectInput(Scanner scanner) throws Exception {
+		
+		// String cmd;
 		String[] input = new String[2];
 		
+		
+		try {
 		System.out.println("What do you wish to do next? ");
 		// Collect (1) action, (2) target of action (if any)
 		// for example, go (action) east (target)
 		
-		cmd = scanner.nextLine();
+		input = scanner.nextLine().split(" ");
 		
-		input = cmd.split(" ", 2);
+		//System.out.println("\nYou have entered: ");
+		//for-each loop to print the string
+		//for(String str: input) {
+			//System.out.println(str);
+		//}
 		
-		scanner.close();
 		return input;
+		} catch(Exception e) {
+			System.out.println("Error (in collectInput): " + e.getMessage());
+			
+			
+			input = scanner.nextLine().split(" ");
+			return input;
+		} finally {
+			System.out.println("in collectInput (finally) block.");
+		}
 	}
 	
 	private static void parse(String[] playerCmdInput, Player player) {
-		//Room[] playRoom;
-		//Room currentRoom = null;
 		String msg;
 		boolean lockedRoomFound = false;
 		
 		switch(playerCmdInput[0]) {
 			case "go":
 				// handle target (direction)
-				System.out.println("In case \"go\".");
-				System.out.println("Size of second element: "
-						+ playerCmdInput[1].length() + ".");
 				if(playerCmdInput[1].equalsIgnoreCase("north")) {
-					System.out.println("got target \"north\".");
 					Main.processCommand("north", player);
-				}else if (playerCmdInput[1] == "south") {
+				}else if (playerCmdInput[1].equalsIgnoreCase("south")) {
 					Main.processCommand("south", player);
-				}else if (playerCmdInput[1] == "east") {
+				}else if (playerCmdInput[1].equalsIgnoreCase("east")) {
 					Main.processCommand("east", player);
-				}else if (playerCmdInput[1] == "west") {
+				}else if (playerCmdInput[1].equalsIgnoreCase("west")) {
 					Main.processCommand("west", player);
 				} else {
 					// throw exception
@@ -203,25 +241,33 @@ public class Main {
 	}
 	
 	private static void processCommand(String target, Player player) {
+		// Determine if exit actually exists
 		// Room player is trying to go into
-		Room nextRoom = player.getCurrentRoom().getExit(target);
 		
-		// Perform check - player might be trying to walk
-		// into a locked room
-		System.out.println("Entered processCommand.");
-		if(Main.checkLock(nextRoom)) {
-			System.out.println("boolean value is true");
-			return; // Player is not moving
+		if( roomExists(player, target) ) {
+			Room nextRoom = player.getCurrentRoom().getExit(target);
+			
+			// Perform check - player might be trying to walk
+			// into a locked room
+			
+			if(Main.checkLock(nextRoom)) {
+				//System.out.println("boolean value is true");
+				return; // Player is not moving
+			} else {
+				
+				player.setCurrentRoom(nextRoom);
+				System.out.println("Next room: " + nextRoom.getName());
+				//printRoom(player);
+			}
 		} else {
-			System.out.println("attempting to setCurrentRoom.");
-			player.setCurrentRoom(nextRoom);
-			printRoom(player);
+			System.out.println("There is no such exit.");
+			// player is not moving - room does not exit to target
 		}
 	}
 	
 	private static boolean checkLock(Room curRm) {
 		String msg = null;
-		if(curRm.getName() == "study") {
+		if(curRm.getName().equalsIgnoreCase("The Study Room")) {
 			if(curRm.getLockState()) {
 				msg = "Door doesn't open!  You always keep your study "
 						+ "room locked.";
